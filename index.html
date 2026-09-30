@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividades Interactivas - Módulo #4</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f9f4;
+            color: #222222;
+            margin: 20px;
+            line-height: 1.5;
+        }
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: #ffffff;
+            border: 1px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        }
+        h2 {
+            color: #0b6623;
+            text-align: center;
+            font-size: 20px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .instructions {
+            text-align: center;
+            font-style: italic;
+            color: #555;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+        /* Pestañas de navegación */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #2e8b57;
+        }
+        .tab-btn {
+            background-color: #e8f5e9;
+            color: #117a35;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background 0.2s;
+            outline: none;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            margin-right: 5px;
+        }
+        .tab-btn.active {
+            background-color: #2e8b57;
+            color: white;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        /* Estilos de escenarios */
+        .scenario-box {
+            background-color: #f9fbf9;
+            border: 1px solid #c8e6c9;
+            border-left: 5px solid #2e8b57;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .mock-msg {
+            background-color: #f1f8f5;
+            border: 1px dashed #2e8b57;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #1e4d2b;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            white-space: pre-line;
+        }
+        .story-text {
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 12px;
+            background-color: #fff;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+        }
+        .question-title {
+            font-weight: bold;
+            color: #1e4d2b;
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+        .options-group label {
+            display: block;
+            margin-bottom: 6px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .check-btn {
+            background-color: #2e8b57;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            margin-top: 10px;
+        }
+        .check-btn:hover {
+            background-color: #117a35;
+        }
+        .feedback-result {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            display: none;
+        }
+    </style>
+    <script>
+        function openTab(evt, tabName) {
+            let contents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < contents.length; i++) {
+                contents[i].classList.remove("active");
+            }
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function evaluarCaso(formId, respuestaCorrecta, feedbackId) {
+            const radios = document.getElementsByName(formId);
+            let seleccionado = null;
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].checked) {
+                    seleccionado = radios[i].value;
+                    break;
+                }
+            }
+            
+            const fb = document.getElementById(feedbackId);
+            fb.style.display = "block";
+            
+            if (!seleccionado) {
+                fb.innerHTML = "Por favor, selecciona una opción antes de comprobar.";
+                fb.style.backgroundColor = "#fff3cd";
+                fb.style.color = "#856404";
+                return;
+            }
+            
+            if (seleccionado === respuestaCorrecta) {
+                fb.innerHTML = "<strong>¡Correcto!</strong> Has identificado con éxito la trampa en este escenario.";
+                fb.style.backgroundColor = "#e8f5e9";
+                fb.style.color = "#117a35";
+            } else {
+                fb.innerHTML = "<strong>Incorrecto.</strong> Analiza bien las señales de alerta de ingeniería social del Módulo 4.";
+                fb.style.backgroundColor = "#ffebee";
+                fb.style.color = "#c62828";
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <h2>Actividades Prácticas — Módulo #4</h2>
+    <p class="instructions">Selecciona una pestaña para desarrollar las actividades interactivas del módulo.</p>
+
+    <!-- PESTAÑAS DE NAVEGACIÓN -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab(event, 'actividad1')">Actividad 1: Caza la Trampa</button>
+        <button class="tab-btn" onclick="openTab(event, 'actividad2')">Actividad 2: ¿Regalo o Estafa?</button>
+    </div>
+
+    <!-- CONTENIDOS DE LA ACTIVIDAD 1 -->
+    <div id="actividad1" class="tab-content active">
+        <p style="font-size: 13px; font-style: italic; color: #555; text-align: center; margin-bottom: 15px;">Analiza los mensajes de texto sospechosos y detecta las señales de alerta estudiadas.</p>
+
+        <!-- CASO 1.1 -->
+        <div class="scenario-box">
+            <div style="font-weight: bold; color: #117a35; margin-bottom: 5px;">Escenario 1: El falso banco</div>
+            <div class="mock-msg">Remitente: +593 98 765 4321
+"Estimado cliente, su tarjeta de crédito ha sido suspendida temporalmente por seguridad. Ingrese de inmediato a https://banco-ecuador-actualiza.net para reactivarla."</div>
+            <div class="question-title">¿Cuál es la señal más clara de que este mensaje es smishing (estafa)?</div>
+            <div class="options-group">
+                <label><input type="radio" name="p1" value="a"> A) El uso de un enlace con un dominio extraño (.net) ajeno al banco oficial[cite: 1].</label>
+                <label><input type="radio" name="p1" value="b"> B) Que el mensaje esté redactado en español.</label>
+                <label><input type="radio" name="p1" value="c"> C) Que avise sobre una suspensión de tarjeta.</label>
+            </div>
+            <button class="check-btn" onclick="evaluarCaso('p1', 'a', 'fb1')">Comprobar respuesta</button>
+            <div id="fb1" class="feedback-result"></div>
+        </div>
+
+        <!-- CASO 1.2 -->
+        <div class="scenario-box">
+            <div style="font-weight: bold; color: #117a35; margin-bottom: 5px;">Escenario 2: El falso paquete</div>
+            <div class="mock-msg">Remitente: Servicio Postal
+"Usted tiene un envío internacional en oficina con pagos pendientes de arancel ($1.50). Responda en las próximas 2 horas o el paquete será devuelto al exterior."</div>
+            <div class="question-title">¿Qué táctica psicológica utiliza principalmente este mensaje para engañar al usuario?</div>
+            <div class="options-group">
+                <label><input type="radio" name="p2" value="a"> A) Ofrecer un descuento comercial muy atractivo.</label>
+                <label><input type="radio" name="p2" value="b"> B) Urgencia y presión extrema (amenaza de perder el envío en 2 horas)[cite: 1].</label>
+                <label><input type="radio" name="p2" value="c"> C) Solicitar una cita presencial obligatoria.</label>
+            </div>
+            <button class="check-btn" onclick="evaluarCaso('p2', 'b', 'fb2')">Comprobar respuesta</button>
+            <div id="fb2" class="feedback-result"></div>
+        </div>
+    </div>
+
+    <!-- CONTENIDOS DE LA ACTIVIDAD 2 -->
+    <div id="actividad2" class="tab-content">
+        <p style="font-size: 13px; font-style: italic; color: #555; text-align: center; margin-bottom: 15px;">Revisa los 3 casos típicos (premios ficticios, ofertas de empleo engañosas y suplantación de familiares)[cite: 1] y detecta el fraude.</p>
+
+        <!-- CASO 2.1: Premios ficticios -->
+        <div class="scenario-box">
+            <div style="font-weight: bold; color: #117a35; margin-bottom: 5px;">Caso A: El falso premio (Premios ficticios)</div>
+            <div class="story-text">Recibes una notificación en redes sociales que dice: <i>"¡Felicidades! Has sido seleccionado para ganar un teléfono último modelo. Para reclamarlo y cubrir los costos de envío aduanero, solo debes depositar $5.00 a la cuenta de un tercero"</i>[cite: 1].</div>
+            <div class="question-title">¿Cómo debes interpretar este tipo de situaciones según el Módulo 4?</div>
+            <div class="options-group">
+                <label><input type="radio" name="p_casoA" value="estafa"> A) Es una estafa; ninguna promoción legítima cobra por entregar un premio o exigir pagos por adelantado[cite: 1].</label>
+                <label><input type="radio" name="p_casoA" value="real"> B) Es un procedimiento legal y normal de entrega de premios.</label>
+            </div>
+            <button class="check-btn" onclick="evaluarCaso('p_casoA', 'estafa', 'fb_a')">Comprobar respuesta</button>
+            <div id="fb_a" class="feedback-result"></div>
+        </div>
+
+        <!-- CASO 2.2: Ofertas de empleo engañosas -->
+        <div class="scenario-box">
+            <div style="font-weight: bold; color: #117a35; margin-bottom: 5px;">Caso B: La oferta laboral engañosa</div>
+            <div class="story-text">Encontraste un anuncio en WhatsApp que ofrece un puesto excelente. Al postular, te piden realizar un depósito económico previo para "financiar un curso obligatorio de inducción y la emisión de uniformes"[cite: 1].</div>
+            <div class="question-title">¿Cuál es la regla de oro ante una oferta de empleo de este tipo?</div>
+            <div class="options-group">
+                <label><input type="radio" name="p_casoB" value="falso"> A) Es una oferta falsa; las empresas formales nunca piden dinero por adelantado a los postulantes[cite: 1].</label>
+                <label><input type="radio" name="p_casoB" value="verdadero"> B) Debes pagar rápido para asegurar el cupo de trabajo.</label>
+            </div>
+            <button class="check-btn" onclick="evaluarCaso('p_casoB', 'falso', 'fb_b')">Comprobar respuesta</button>
+            <div id="fb_b" class="feedback-result"></div>
+        </div>
+
+        <!-- CASO 2.3: Suplantación de familiares -->
+        <div class="scenario-box">
+            <div style="font-weight: bold; color: #117a35; margin-bottom: 5px;">Caso C: El familiar en apuros (Suplantación)</div>
+            <div class="story-text">Te llega un mensaje de texto de un número desconocido que dice: <i>"Hola mamá/papá, tuve un accidente fuerte con mi auto y mi celular se dañó. Necesito que me hagas una transferencia urgente de $300"</i>[cite: 1].</div>
+            <div class="question-title">¿Qué acción de defensa debes tomar inmediatamente?</div>
+            <div class="options-group">
+                <label><input type="radio" name="p_casoC" value="fraude"> A) Cortar la comunicación, no transferir y llamar al número guardado de siempre para verificar[cite: 1].</label>
+                <label><input type="radio" name="p_casoC" value="seguro"> B) Enviar el dinero de inmediato para evitar problemas legales al familiar.</label>
+            </div>
+            <button class="check-btn" onclick="evaluarCaso('p_casoC', 'fraude', 'fb_c')">Comprobar respuesta</button>
+            <div id="fb_c" class="feedback-result"></div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
